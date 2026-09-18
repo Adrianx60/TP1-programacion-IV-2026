@@ -1,37 +1,93 @@
 import express from 'express';
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Middleware nativo de Express para leer JSON
+// Middleware para leer JSON
 app.use(express.json());
 
-app.post('/rectangulos', (req, res) => {
-    const { base, altura } = req.body;
+// Función de validación estricta
+function esNumeroPositivo(val) {
+  if (val === null || val === undefined || val === '') return false;
+  const num = Number(val);
+  return !isNaN(num) && num > 0;
+}
 
-    // Validación nativa (sin librerías externas)
-    if (
-        typeof base !== 'number' || isNaN(base) || base <= 0 ||
-        typeof altura !== 'number' || isNaN(altura) || altura <= 0
-    ) {
-        return res.status(400).json({ 
-            error: "Los valores de 'base' y 'altura' deben ser estrictamente números mayores a 0." 
-        });
-    }
+// Función de cálculo
+function calcularRectangulo(base, altura) {
+  const b = Number(base);
+  const a = Number(altura);
 
-    const superficie = base * altura;
-    const perimetro = 2 * (base + altura);
-    const esCuadrado = base === altura;
+  const perimetro = 2 * (b + a);
+  const superficie = b * a;
+  const esCuadrado = b === a;
 
-    res.json({
-        figura: esCuadrado ? "Cuadrado" : "Rectángulo",
-        base,
-        altura,
-        superficie,
-        perimetro,
-        esCuadrado
+  return {
+    figura: esCuadrado ? "Cuadrado" : "Rectángulo",
+    base: b,
+    altura: a,
+    perimetro,
+    superficie,
+    esCuadrado
+  };
+}
+
+// POST: recibe datos por body
+app.post('/rectangulos/calcular', (req, res) => {
+  const { base, altura } = req.body;
+
+  if (base === undefined || altura === undefined) {
+    return res.status(400).json({
+      error: 'Parámetros faltantes',
+      mensaje: 'Debes enviar base y altura en el body.'
     });
+  }
+
+  if (!esNumeroPositivo(base) || !esNumeroPositivo(altura)) {
+    return res.status(400).json({
+      error: 'Valores inválidos',
+      mensaje: 'La base y la altura deben ser números mayores a 0.'
+    });
+  }
+
+  const resultado = calcularRectangulo(base, altura);
+
+  return res.status(200).json({
+    mensaje: 'Cálculo realizado con éxito',
+    datos: resultado
+  });
 });
 
-const PORT = 3000;
+// GET: recibe datos por query params
+app.get('/rectangulos/calcular', (req, res) => {
+  const { base, altura } = req.query;
+
+  if (!base || !altura) {
+    return res.status(400).json({
+      error: 'Parámetros faltantes',
+      mensaje: 'Debes pasar base y altura en la URL.'
+    });
+  }
+
+  if (!esNumeroPositivo(base) || !esNumeroPositivo(altura)) {
+    return res.status(400).json({
+      error: 'Valores inválidos',
+      mensaje: 'La base y la altura deben ser números mayores a 0.'
+    });
+  }
+
+  const resultado = calcularRectangulo(base, altura);
+
+  return res.status(200).json({
+    mensaje: 'Cálculo realizado con éxito',
+    datos: resultado
+  });
+});
+
+// Middleware para rutas inexistentes
+app.use((req, res) => {
+  res.status(404).json({ error: 'Ruta no encontrada' });
+});
+
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
