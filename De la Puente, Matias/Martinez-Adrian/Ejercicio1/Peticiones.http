@@ -1,0 +1,26 @@
+### 1. Probar con un rectángulo común
+POST http://localhost:3000/rectangulos
+Content-Type: application/json
+
+{
+  "base": 10,
+  "altura": 5
+}
+
+### 2. Probar con un cuadrado (base y altura iguales)
+POST http://localhost:3000/rectangulos
+Content-Type: application/json
+
+{
+  "base": 6,
+  "altura": 6
+}
+
+### 3. Probar validación con valores inválidos (debe dar error)
+POST http://localhost:3000/rectangulos
+Content-Type: application/json
+
+{
+  "base": -4,
+  "altura": 8
+}
