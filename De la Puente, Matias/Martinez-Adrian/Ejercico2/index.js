@@ -6,12 +6,12 @@ app.use(express.json());
 // Arreglo interno para almacenar los alumnos
 let alumnos = [];
 
-// 1. GET: Obtener todos los alumnos
+//Obtener todos los alumnos
 app.get('/alumnos', (req, res) => {
     res.json(alumnos);
 });
 
-// 2. GET: Obtener un alumno por nombre con datos derivados (promedio y condición)
+//Obtener un alumno por nombre con datos derivados (promedio y condición)
 app.get('/alumnos/:nombre', (req, res) => {
     const nombreParam = req.params.nombre.trim().toLowerCase();
     const alumno = alumnos.find(a => a.nombre.toLowerCase() === nombreParam);
