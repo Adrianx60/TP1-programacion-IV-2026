@@ -1,5 +1,5 @@
 ### 1. Probar con un rectángulo común
-POST http://localhost:3000/rectangulos
+POST http://localhost:3000/rectangulos/calcular
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### 2. Probar con un cuadrado (base y altura iguales)
-POST http://localhost:3000/rectangulos
+POST http://localhost:3000/rectangulos/calcular
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### 3. Probar validación con valores inválidos (debe dar error)
-POST http://localhost:3000/rectangulos
+POST http://localhost:3000/rectangulos/calcular
 Content-Type: application/json
 
 {
