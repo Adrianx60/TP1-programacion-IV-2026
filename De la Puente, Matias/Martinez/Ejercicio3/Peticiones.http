@@ -1,0 +1,55 @@
+### 1. Crear una tarea pendiente (Caso exitoso)
+POST http://localhost:3000/tareas
+Content-Type: application/json
+
+{
+  "nombre": "Estudiar Node.js",
+  "completada": false
+}
+
+### 2. Crear una tarea ya completada (Caso exitoso)
+POST http://localhost:3000/tareas
+Content-Type: application/json
+
+{
+  "nombre": "Comprar apuntes",
+  "completada": true
+}
+
+### 3. Intentar crear una tarea con el mismo nombre (Debe dar error 400 por unicidad)
+POST http://localhost:3000/tareas
+Content-Type: application/json
+
+{
+  "nombre": "Estudiar Node.js",
+  "completada": true
+}
+
+### 4. Intentar crear una tarea sin nombre o vacío (Debe dar error 400)
+POST http://localhost:3000/tareas
+Content-Type: application/json
+
+{
+  "nombre": "",
+  "completada": false
+}
+
+### 5. Consultar todas las tareas registradas
+GET http://localhost:3000/tareas
+
+### 6. Consultar solo las tareas completadas (Usando Query Param)
+GET http://localhost:3000/tareas?completada=true
+
+### 7. Consultar solo las tareas pendientes (Usando Query Param)
+GET http://localhost:3000/tareas?completada=false
+
+### 8. Actualizar el estado de una tarea usando PUT
+PUT http://localhost:3000/tareas/Estudiar Node.js
+Content-Type: application/json
+
+{
+  "completada": true
+}
+
+### 9. Eliminar una tarea
+DELETE http://localhost:3000/tareas/Comprar apuntes
